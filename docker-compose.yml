@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+
+  url-shortener:
+    image: url-shortener
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8888:8888
+    network_mode: bridge
+    volumes:
+      - ./env.edn:/env.edn
+
+  mysql:
+    image: mysql:latest
+    # not recommended in production
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - 3306:3306
+    network_mode: bridge
+    volumes:
+      - mysql_db_data_container:/var/lib/mysql
+
+  adminer:
+    image: adminer:latest
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql 
+    ports:
+      - 8080:8080
+    network_mode: bridge
+
+volumes:
+  mysql_db_data_container:
