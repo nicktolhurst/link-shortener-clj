@@ -15,6 +15,5 @@ FROM openjdk:15-slim-buster AS API
 COPY --from=BUILD /target/project.jar /project.jar
 
 EXPOSE 8888
-ENV MALLOC_ARENA_MAX=2
 
 ENTRYPOINT ["java", "-cp", "project.jar", "clojure.main", "-m", "linkshortener.core"]
